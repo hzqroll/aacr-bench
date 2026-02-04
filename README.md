@@ -5,6 +5,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-b31b1b.svg)](https://arxiv.org/abs/2601.19494)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-Data-yellow)](https://huggingface.co/datasets/Alibaba-Aone/aacr-bench)
 ![](https://img.shields.io/badge/Dataset-v1.0-green.svg)
 ![](https://img.shields.io/badge/Languages-10-orange.svg)
 ![](https://img.shields.io/badge/PRs-200-red.svg)
