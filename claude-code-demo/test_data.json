@@ -1,0 +1,12 @@
+[
+  {
+    "change_line_count": 44,
+    "category": "功能更新",
+    "project_main_language": "Java",
+    "source_commit": "c507aea7f967359e1682e23f8f6144f25270b51b",
+    "target_commit": "e44958bfa26f835add77a3f7bdfa092bd15895d4",
+    "gitlabMrUrl": "https://git.cai-inc.com/rdc/paas/shareservice/expert-server/-/merge_requests/139",
+    "comments": [],
+    "finish": false
+  }
+]
