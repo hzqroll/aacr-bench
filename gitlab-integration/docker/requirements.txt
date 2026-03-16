@@ -1,0 +1,19 @@
+# GitLab MR 代码评审机器人依赖
+
+# HTTP 请求
+requests>=2.28.0
+
+# GitLab SDK
+python-gitlab>=3.14.0
+
+# Anthropic SDK
+anthropic>=0.18.0
+
+# 配置文件解析
+pyyaml>=6.0
+
+# 命令行工具
+click>=8.1.0
+
+# 日志增强
+colorlog>=6.7.0

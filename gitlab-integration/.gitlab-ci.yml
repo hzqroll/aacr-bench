@@ -1,0 +1,61 @@
+# GitLab CI/CD 配置文件
+# 将此文件放到你的项目根目录
+
+stages:
+  - code-review
+
+# 自动代码评审任务
+code-review:
+  stage: code-review
+  image: python:3.11-slim
+  rules:
+    # 仅在 MR 事件时触发
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    # 传递给脚本的变量
+    GITLAB_URL: $CI_SERVER_URL
+    PROJECT_ID: $CI_PROJECT_ID
+    MR_IID: $CI_MERGE_REQUEST_IID
+    SOURCE_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    TARGET_BRANCH: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+  before_script:
+    # 安装依赖
+    - apt-get update && apt-get install -y git curl
+    - pip install --quiet requests python-gitlab anthropic pyyaml
+  script:
+    # 运行评审脚本
+    - python scripts/review_bot.py
+  after_script:
+    # 清理（可选）
+    - echo "Code review completed"
+  # 超时设置（防止长时间运行）
+  timeout: 30m
+  # 允许失败（不影响 MR 合并）
+  allow_failure: true
+  # 仅评审代码变更
+  only:
+    - merge_requests
+  # 排除特定文件变更
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-review/
+      - $CI_MERGE_REQUEST_TITLE =~ /WIP:/
+  artifacts:
+    reports:
+      # 可选：生成评审报告
+      codequality: gl-code-quality-report.json
+    expire_in: 1 week
+    when: always
+
+# 可选：手动触发的评审任务
+manual-review:
+  stage: code-review
+  image: python:3.11-slim
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+      allow_failure: true
+  script:
+    - echo "Manual code review triggered"
+    - python scripts/review_bot.py --verbose
+  when: manual

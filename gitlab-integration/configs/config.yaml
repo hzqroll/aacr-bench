@@ -1,0 +1,87 @@
+# GitLab MR 自动代码评审配置文件
+# 复制此文件为 config.yaml 并填入实际值
+
+# GitLab 配置
+gitlab:
+  # GitLab 服务器地址（内部部署填写内部地址）
+  url: "https://gitlab.your-company.com"
+
+  # GitLab Access Token
+  # 需要 api 权限
+  # 建议使用 CI/CD Variables 配置，不要直接写在文件中
+  token: "${GITLAB_TOKEN}"
+
+  # 项目 ID（可以从项目设置中获取）
+  project_id: "${PROJECT_ID}"
+
+# Claude API 配置
+claude:
+  # Anthropic API Key
+  # 建议使用 CI/CD Variables 配置
+  api_key: "${ANTHROPIC_API_KEY}"
+
+  # 使用的模型
+  # 推荐: claude-sonnet-4-6-20250514 (平衡性能和成本)
+  # 高级: claude-opus-4-6-20250514 (最高质量)
+  model: "claude-sonnet-4-6-20250514"
+
+  # 最大输出 token 数
+  max_tokens: 8192
+
+# 评审配置
+review:
+  # 需要评审的文件扩展名
+  include_extensions:
+    - ".py"      # Python
+    - ".java"    # Java
+    - ".js"      # JavaScript
+    - ".ts"      # TypeScript
+    - ".tsx"     # TypeScript React
+    - ".go"      # Go
+    - ".rs"      # Rust
+    - ".cpp"     # C++
+    - ".c"       # C
+    - ".h"       # Header
+    - ".cs"      # C#
+    - ".rb"      # Ruby
+    - ".php"     # PHP
+
+  # 排除的文件模式
+  exclude_patterns:
+    - "*.lock"           # 锁文件
+    - "package-lock.json"
+    - "yarn.lock"
+    - "poetry.lock"
+    - "*.min.js"         # 压缩文件
+    - "*.min.css"
+    - "*.generated.*"    # 自动生成文件
+    - "dist/**"          # 构建输出
+    - "build/**"
+    - "node_modules/**"
+    - "vendor/**"
+
+  # 每个文件最大 diff 行数
+  max_diff_lines: 500
+
+  # 最大评审文件数
+  max_files: 30
+
+  # 跳过评审的标记（在 MR 标题或描述中）
+  skip_markers:
+    - "[skip-review]"
+    - "[WIP]"
+    - "Draft:"
+
+# 通知配置
+notification:
+  # 是否在评论中 @ 相关人员
+  mention_participants: false
+
+  # 严重程度阈值（只有达到此阈值的评论才通知）
+  # 可选: info, warning, error
+  notify_threshold: "warning"
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
